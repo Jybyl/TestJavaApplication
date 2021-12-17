@@ -1,16 +1,15 @@
 package com.application.TestJavaApplication;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import  org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -19,7 +18,7 @@ import com.application.TestJavaApplication.models.UserModel;
 
 import com.application.TestJavaApplication.repositories.UserRepository;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(value = { SpringExtension.class })
 @WebMvcTest
 public class UserControllerTest {
 	
@@ -44,7 +43,7 @@ public class UserControllerTest {
 		user.setName("Phil");
 		
 		userRepos.save(user);
-		assertNotNull(userRepos.findById(4L).get());
+		Assertions.assertNotNull(userRepos.findById(4L).get());
 	}
 	
 	public void userDelete() {
@@ -53,7 +52,7 @@ public class UserControllerTest {
 		user.setName("User Delete");
 		userRepos.save(user);	
 		userRepos.delete(user);
-		assertNull(userRepos.findById(5L).get());
+		Assertions.assertNull(userRepos.findById(5L).get());
 	}
 	
 	public void userUpdate() {
@@ -65,6 +64,6 @@ public class UserControllerTest {
 		UserModel updatedUser = userRepos.findById(1L).get();
 		updatedUser.setName("John");
 		userRepos.save(updatedUser);
-		assertNotEquals("User", userRepos.findById(1L).get().getName());
+		Assertions.assertNotEquals("User", userRepos.findById(1L).get().getName());
 	}
 }

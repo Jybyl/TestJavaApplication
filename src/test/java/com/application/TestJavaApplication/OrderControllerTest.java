@@ -1,19 +1,17 @@
 package com.application.TestJavaApplication;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.Assertions;
 
 import java.util.List;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,7 +24,7 @@ import com.application.TestJavaApplication.repositories.OrderRepository;
 
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
+@ExtendWith(value = { SpringExtension.class })
 @WebMvcTest
 public  class OrderControllerTest  {
 	
@@ -51,7 +49,7 @@ public  class OrderControllerTest  {
 		order.setProductOrder(List.of(new ProductModel(1L, "productTest")));
 		
 		orderRepos.save(order);
-		assertNotNull(orderRepos.findById(4L).get());
+		Assertions.assertNotNull(orderRepos.findById(4L).get());
 	}
 	@Test
 	public void orderDelete() {
@@ -62,7 +60,7 @@ public  class OrderControllerTest  {
 		
 		orderRepos.save(order);
 		orderRepos.deleteById(5L);
-		assertNull(orderRepos.findById(5L).get());
+		Assertions.assertNull(orderRepos.findById(5L).get());
 	}
 	
 	@Test
@@ -72,7 +70,7 @@ public  class OrderControllerTest  {
 		order.setUserId(1L);
 		order.setProductOrder(List.of(new ProductModel(2L, "updatedProductOrder")));
 		orderRepos.save(order);
-		assertNotEquals(new ProductModel(2L,"product"), orderRepos.findById(1L).get().getProductOrder());
+		Assertions.assertNotEquals(new ProductModel(2L,"product"), orderRepos.findById(1L).get().getProductOrder());
 	}
 	
 	

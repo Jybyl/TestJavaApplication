@@ -36,13 +36,13 @@ public class UserController {
 	}
 	
 	@GetMapping
-	public String userLogin(@AuthenticationPrincipal OAuth2User test) {
-		String a = test.getAttribute("name");
-		String b = test.getAttribute("email");
-		UserModel newUser = new UserModel(a, b);
-		System.out.println(a + " " + b);
+	public String userLogin(@AuthenticationPrincipal OAuth2User user) {
+		String name = user.getAttribute("name");
+		String email = user.getAttribute("email");
+		UserModel newUser = new UserModel(name, email);
+		System.out.println(name + " " + email);
 		userService.saveUser(newUser);
-		return a + " " + b;
+		return name + " " + email;
 	}
 	@PostMapping
 	public void addUser(@RequestBody UserModel user){
