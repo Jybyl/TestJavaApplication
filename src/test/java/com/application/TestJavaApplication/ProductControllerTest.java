@@ -1,5 +1,6 @@
 package com.application.TestJavaApplication;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -61,7 +62,7 @@ public class ProductControllerTest{
 		ProductModel updateProduct = productRepos.findById(5L).get();
 		updateProduct.setProductName("Updated");
 		productRepos.save(updateProduct);
-		
+		assertNotEquals("Product", productRepos.findById(5L).get().getProductName());
 	}
 	
 	
