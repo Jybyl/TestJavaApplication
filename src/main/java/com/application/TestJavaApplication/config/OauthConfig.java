@@ -9,11 +9,15 @@ public class OauthConfig  extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-	http.antMatcher("/**").authorizeRequests()
-		.antMatchers("/").permitAll()
-		.anyRequest().authenticated()
-		.and()
-		.oauth2Login();
+		
+		http.cors().and().csrf().disable().antMatcher("/**").authorizeRequests()
+			.antMatchers("/").permitAll()
+			.anyRequest().authenticated()
+			.and()
+			.logout().logoutSuccessUrl("/")
+			.and()
+			.oauth2Login().defaultSuccessUrl("/swagger-ui.html");
 	}
+	
 	
 }

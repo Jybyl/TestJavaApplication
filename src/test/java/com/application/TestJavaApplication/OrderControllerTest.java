@@ -1,0 +1,79 @@
+package com.application.TestJavaApplication;
+
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.util.List;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.application.TestJavaApplication.models.OrderModel;
+import com.application.TestJavaApplication.models.ProductModel;
+import com.application.TestJavaApplication.repositories.OrderRepository;
+
+
+
+
+@SpringBootTest
+@RunWith(SpringRunner.class)
+@WebMvcTest
+public  class OrderControllerTest  {
+	
+	@Autowired
+	OrderRepository orderRepos;
+	@Autowired
+	MockMvc mvc;
+	@Test
+	public void contextLoads() throws Exception{
+		
+		MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/api/users")
+					.accept(MediaType.APPLICATION_JSON)).andReturn();
+		
+		Mockito.verify(orderRepos).findAll();
+	}
+	
+	@Test
+	public void orderCreate() {
+		OrderModel order = new OrderModel();
+		order.setOrderId(4L);
+		order.setUserId(1L);
+		order.setProductOrder(List.of(new ProductModel(1L, "productTest")));
+		
+		orderRepos.save(order);
+		assertNotNull(orderRepos.findById(4L).get());
+	}
+	@Test
+	public void orderDelete() {
+		OrderModel order = new OrderModel();
+		order.setOrderId(5L);
+		order.setUserId(1L);
+		order.setProductOrder(List.of(new ProductModel(2L, "productDelete")));
+		
+		orderRepos.save(order);
+		orderRepos.deleteById(5L);
+		assertNull(orderRepos.findById(5L).get());
+	}
+	
+	@Test
+	public void orderUpdate() {
+		OrderModel order = new OrderModel();
+		order.setOrderId(1L);
+		order.setUserId(1L);
+		order.setProductOrder(List.of(new ProductModel(2L, "updatedProductOrder")));
+		orderRepos.save(order);
+		assertNotEquals(new ProductModel(2L,"product"), orderRepos.findById(1L).get().getProductOrder());
+	}
+	
+	
+}
